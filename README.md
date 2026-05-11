@@ -11,8 +11,32 @@
 | `01_ml-overview` | 机器学习概述 | 暂无独立项目 |
 | `02_knn` | KNN 算法 | `iris-knn-classifier`、`digits-knn-classifier` |
 | `03_linear-regression` | 线性回归 | `linear-regression-from-scratch` |
-| `04_logistic-regression` | 逻辑回归 | 暂无独立项目 |
+| `04_logistic-regression` | 逻辑回归 | `cancer-prediction` |
 | `90_pending-review` | 待归类/待复盘 | `spam-classifier` |
+
+## 统一环境
+
+这个仓库使用一套共享 Python 环境，所有章节案例共用根目录的 `pyproject.toml` 和 `uv.lock`。
+
+```bash
+cd /Users/quanzaizai/Projects/machine-learning-projects
+uv sync
+uv run python 04_logistic-regression/cancer-prediction/main.py
+```
+
+常用依赖包括 `numpy`、`pandas`、`scikit-learn`、`matplotlib` 和 `seaborn`。
+
+## 数据集
+
+课程里需要手动导入的 CSV 或其他小型数据集统一放在 `datasets/` 目录。
+
+例如：
+
+```python
+import pandas as pd
+
+df = pd.read_csv("datasets/breast_cancer.csv")
+```
 
 ## 章节说明
 
