@@ -63,3 +63,4 @@ print(f"y的预测值为: {y_pred}")
 # 5.2 计算分类准确率
 accuracy = estimator.score(X_test, y_test)
 print(f"准确率为: {accuracy}")
+
