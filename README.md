@@ -24,7 +24,7 @@
 
 ```bash
 # 1. 进入项目根目录并同步依赖环境
-cd /Users/quanzaizai/Projects/machine-learning-projects
+cd /Users/quanzaizai/Projects/learning/machine-learning-projects
 uv sync
 
 # 2. 运行对应章节的具体项目案例
