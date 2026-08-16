@@ -1,32 +1,32 @@
-# Machine Learning Projects (机器学习实践项目合集)
+# Machine Learning Projects (机器学习经典算法实战)
 
-这是我的机器学习课程项目合集。目录按学习章节组织，每一章下面放对应的实践案例。目标是让“学过的知识点”和“写过的代码案例”保持一致：先按章节理解概念，再通过项目复现流程，最后把可运行代码沉淀下来。
+本项目为机器学习经典算法的理论推导、从零实现与工程实战案例合集。
 
-## 🌟 项目亮点
+---
 
-- **按章分类**：完全匹配机器学习的学习路径，方便按图索骥复习知识点。
-- **统一环境**：全仓库共用一个 Python 环境 (`pyproject.toml`)，告别重复安装依赖的烦恼。
-- **数据解耦**：数据集统一放置在 `datasets/` 目录，代码逻辑更加清晰。
+## ⚡ 快速环境配置
 
-## 📁 目录结构与章节说明
-
-| 章节目录 | 主题涵盖 | 核心实践项目 |
-| --- | --- | --- |
-| `01_ml-overview` | 机器学习整体框架和基础概念 | （理论积累） |
-| `02_knn` | KNN 分类流程、距离度量、特征预处理等 | `iris-knn-classifier`、`digits-knn-classifier` |
-| `03_linear-regression` | 线性回归、损失函数、梯度下降等 | `linear-regression-from-scratch` |
-| `04_logistic-regression` | 逻辑回归、分类评估、ROC 与 AUC 等 | `cancer-prediction` |
-| `90_pending-review` | 待归类/待复盘项目 | `spam-classifier` |
-
-## 🚀 如何运行
-
-本仓库使用一套共享的 Python 环境。推荐使用 `uv` 进行环境同步和运行。
+本项目统一使用 `uv` 管理虚拟环境与依赖：
 
 ```bash
-# 1. 进入项目根目录并同步依赖环境
-cd /Users/quanzaizai/Projects/learning/machine-learning-projects
+# 同步安装科学计算与机器学习依赖
 uv sync
 
-# 2. 运行对应章节的具体项目案例
-uv run python 04_logistic-regression/cancer-prediction/main.py
+# 运行任意案例（以随机森林调参为例）
+uv run python 06_ensemble-learning/01_random-forest/main.py
 ```
+
+---
+
+## 📚 算法章节与中文导读索引
+
+| 章节与目录 | 中文算法/案例名 | 核心知识点与实现机制 | 数据集 |
+| :--- | :--- | :--- | :--- |
+| **`01_ml-overview/`** | **机器学习全景概览** | 有监督 vs 无监督学习、特征工程生命周期与评估指标体系 | - |
+| **`02_knn/`** | **K-近邻分类器 (KNN)** | 距离度量 (欧氏距离)、K 值选择、鸢尾花与手写数字识别 | `iris`, `digits` |
+| **`03_linear-regression/`** | **线性回归从零手撕** | 梯度下降优化算法 (BGD/SGD)、损失函数收敛曲线绘制 | 仿真回归数据 |
+| **`04_logistic-regression/`** | **逻辑回归与二分类** | Sigmoid 函数、对数损失、电信客户流失预测与癌症良恶性诊断 | `churn.csv`, `breast-cancer.csv` |
+| **`05_decision-tree/`** | **决策树算法实战** | 信息增益 (ID3)、基尼系数 (CART)、泰坦尼克号生存预测 | `titanic` |
+| **`06_ensemble-learning/`** | **集成学习四大名捕** | 随机森林 (Bagging)、AdaBoost、GBDT 与 XGBoost 调优对比 | `train.csv` |
+| **`07_kmeans-clustering/`** | **K-Means 聚类** | 无监督聚类、肘部法则 (Elbow Method)、轮廓系数评估 | `wine0501.csv` |
+| **`90_pending-review/`** | **待复核/练习案例** | 贝叶斯垃圾短信分类器 (SMS Spam Collection) | `SMSSpamCollection` |
