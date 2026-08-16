@@ -1,19 +1,9 @@
 """
-💡【知识点】从零手写一元线性回归 (Linear Regression) 与梯度下降算法 (Gradient Descent)
+【知识点】线性回归从零实现 (梯度下降优化法)
 --------------------------------------------------------------------------------
-📌【概念与数学本质】
-  1. 假设函数 (Hypothesis)：$\hat{y} = w \cdot x + b$
-  2. 损失函数 (MSE Loss)：$L(w, b) = \frac{1}{N} \sum_{i=1}^N (\hat{y}_i - y_i)^2 = \frac{1}{N} \sum_{i=1}^N (w x_i + b - y_i)^2$
-  3. 梯度推导 (Gradients)：
-     - 对权重的偏导：$\frac{\partial L}{\partial w} = \frac{2}{N} \sum (\hat{y}_i - y_i) \cdot x_i$
-     - 对偏置的偏导：$\frac{\partial L}{\partial b} = \frac{2}{N} \sum (\hat{y}_i - y_i) \cdot 1$
-  4. 参数更新规则 (Gradient Step)：$w = w - \alpha \cdot \frac{\partial L}{\partial w}, \quad b = b - \alpha \cdot \frac{\partial L}{\partial b}$
-
-📌【架构与模块分工】
-  1. 数据合成 (Data Synthesis) : 构造带高斯噪声的数据集 $y = 2x + 3 + \epsilon$。
-  2. 梯度下降迭代引擎 (Training Loop) : 500 次前向预测、损失计算、反向梯度与参数更新。
-  3. 训练过程与拟合效果可视化 : 导出 loss_curve.png 与 fit.png。
-  4. 对标验证 (Benchmark) : 调用 sklearn 官方 LinearRegression 验证手动推导准确性。
+1. 预测模型：y_hat = w * x + b
+2. 均方误差损失：MSE = (1/N) * sum((y_hat - y)^2)
+3. 梯度下降：沿负梯度方向迭代更新参数 w = w - lr * dw，直到损失收敛。
 --------------------------------------------------------------------------------
 """
 
