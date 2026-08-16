@@ -1,49 +1,37 @@
 """
-【知识点】集成学习 —— 梯度提升决策树 (GBDT)
+💡【知识点】集成学习 —— 梯度提升决策树 (GBDT)
 --------------------------------------------------------------------------------
-1. 梯度提升：通过迭代训练新树来拟合前序所有树累加后的残差（负梯度）。
-2. 参数优化：结合学习率 (learning_rate) 与树棵数 (n_estimators) 平衡拟合与泛化。
+📌【核心思想与本质】
+  1. 拟合残差：每一棵新生成的决策树不直接拟合标签 y，而是拟合前序所有树预测值累加后的“负梯度”（残差 Residuals）。
+  2. 加法模型：不断纠正前序模型的预测误差，逐步逼近真实目标值。
 --------------------------------------------------------------------------------
 """
 
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.model_selection import train_test_split
 
-def gbdt_classification():
-    # ==================== 1. 数据加载与预处理 ====================
-    df = pd.read_csv("./datasets/train.csv")
+def main():
+    try:
+        df = pd.read_csv("./datasets/train.csv")
+    except Exception:
+        print("请确保 ./datasets/train.csv 存在。")
+        return
 
     X = df[["Pclass", "Sex", "Age"]].copy()
     X["Age"] = X["Age"].fillna(X["Age"].mean())
-    X = pd.get_dummies(X)
+    X = pd.get_dummies(X, drop_first=True)
     y = df["Survived"]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=66, stratify=y
+        X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    # ==================== 2. GBDT 基线模型 ====================
-    estimator = GradientBoostingClassifier(
-        n_estimators=100,
-        learning_rate=0.1,
-        random_state=66
-    )
-    estimator.fit(X_train, y_train)
-    print("=== GBDT 梯度提升决策树基线模型 ===")
-    print(f"基线测试准确率: {estimator.score(X_test, y_test):.2%}\n")
+    gbdt = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3, random_state=42)
+    gbdt.fit(X_train, y_train)
 
-    # ==================== 3. 学习率与树数量网格搜索 ====================
-    param_grid = {
-        "learning_rate": [0.05, 0.1, 0.2],
-        "n_estimators": [100, 200, 300]
-    }
-    gs = GridSearchCV(estimator, param_grid, cv=3)
-    gs.fit(X_train, y_train)
-
-    print("=== GBDT 网格搜索优化结果 ===")
-    print(f"最优超参数组合: {gs.best_params_}")
-    print(f"调优后测试准确率: {gs.score(X_test, y_test):.2%}")
+    acc = gbdt.score(X_test, y_test)
+    print(f"=== GBDT 梯度提升树测试准确率: {acc:.2%} ===")
 
 if __name__ == "__main__":
-    gbdt_classification()
+    main()

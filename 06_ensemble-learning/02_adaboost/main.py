@@ -1,8 +1,11 @@
 """
-【知识点】集成学习 —— 自适应提升 (AdaBoost)
+💡【知识点】集成学习 —— 自适应提升算法 (AdaBoost)
 --------------------------------------------------------------------------------
-1. Boosting 思想：串行训练多个弱分类器，放大前一轮被错分样本的权重。
-2. 最终决策：将所有弱分类器按照各自准确率进行加权线性投票。
+📌【核心思想与本质】
+  1. Boosting 串行迭代：
+     - 每一轮迭代中，被前一轮弱分类器错分的样本权重被放大，正确分类的样本权重被缩小。
+     - 后续弱分类器重点攻坚前序分错的“硬骨头”样本。
+     - 最终将所有弱分类器根据分类准确度进行加权线性组合。
 --------------------------------------------------------------------------------
 """
 
@@ -10,41 +13,27 @@ import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier
 
-def adaboost_classification():
-    # ==================== 1. 数据加载与二分类过滤 ====================
-    df = pd.read_csv("./datasets/wine0501.csv")
+def main():
+    try:
+        df = pd.read_csv("./datasets/wine0501.csv")
+    except Exception:
+        print("请确保 ./datasets/wine0501.csv 存在。")
+        return
 
-    # 过滤掉类别 1，仅保留类别 2 和 3 进行二分类演示
-    df = df[df["Class label"] != 1]
-    X = df[["Hue", "Alcohol"]]
-    y = LabelEncoder().fit_transform(df["Class label"]) # 转换为 0/1 标签
+    X = df.iloc[:, :-1]
+    y = df.iloc[:, -1]
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=66, stratify=y
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # ==================== 2. AdaBoost 集成建模 ====================
-    # 指定浅层决策树 (max_depth=3) 作为弱基学习器
-    base_estimator = DecisionTreeClassifier(max_depth=3, random_state=66)
-    
-    estimator = AdaBoostClassifier(
-        estimator=base_estimator,
-        n_estimators=100,
-        learning_rate=0.1,
-        random_state=66
-    )
-    estimator.fit(X_train, y_train)
+    # 弱基学习器：最大深度为 2 的决策树桩
+    base_tree = DecisionTreeClassifier(max_depth=2, random_state=42)
+    ada = AdaBoostClassifier(estimator=base_tree, n_estimators=50, learning_rate=0.5, random_state=42)
+    ada.fit(X_train, y_train)
 
-    # ==================== 3. 预测与评估 ====================
-    y_pred = estimator.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-
-    print("=== AdaBoost 弱分类器提升结果 ===")
-    print(f"基分类器: 决策树 (max_depth=3) x 100 棵")
-    print(f"测试集准确率: {acc:.2%}")
+    y_pred = ada.predict(X_test)
+    print(f"=== AdaBoost (50 棵弱决策树桩) 测试准确率: {accuracy_score(y_test, y_pred):.2%} ===")
 
 if __name__ == "__main__":
-    adaboost_classification()
+    main()

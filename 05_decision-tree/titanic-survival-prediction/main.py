@@ -1,59 +1,42 @@
 """
-【知识点】决策树分类与泰坦尼克号生还预测
+💡【知识点】决策树 (Decision Tree) 分类与泰坦尼克号生还预测
 --------------------------------------------------------------------------------
-1. 核心机制：通过基尼系数 (Gini) 递归选择最佳划分特征构建判定树。
-2. 预剪枝 (max_depth)：限制最大深度，防止决策树过拟合训练集噪声。
-3. 决策可视化：plot_tree 直观呈现每个决策节点的判定规则。
+📌【核心思想与本质】
+  1. 基尼不纯度 (Gini)：递归选择最能降低不确定性的特征进行二叉分支划分。
+  2. 预剪枝 (max_depth)：限制树的最大生长深度，防止决策树对训练集噪声过拟合。
 --------------------------------------------------------------------------------
 """
 
-import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.tree import DecisionTreeClassifier
 
-def titanic_survival_prediction():
-    # ==================== 1. 数据加载与特征选取 ====================
-    data = pd.read_csv("./datasets/train.csv")
-    
-    # 选取关键特征与标签
-    x = data[["Pclass", "Sex", "Age"]].copy()
-    y = data["Survived"]
+def main():
+    try:
+        df = pd.read_csv("./datasets/train.csv")
+    except Exception:
+        print("请确保 ./datasets/train.csv 数据集存在。")
+        return
 
-    # 缺失值均值插补
-    x["Age"] = x["Age"].fillna(x["Age"].mean())
-    
-    # 类别特征独热编码 (Sex -> Sex_female, Sex_male)
-    x = pd.get_dummies(x, columns=["Sex"])
+    # 1. 特征选取与缺失值填补
+    X = df[["Pclass", "Sex", "Age"]].copy()
+    X["Age"] = X["Age"].fillna(X["Age"].mean())
+    X = pd.get_dummies(X, drop_first=True)
+    y = df["Survived"]
 
-    # ==================== 2. 分层数据集切分 ====================
+    # 2. 数据切分
     X_train, X_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.2, random_state=66, stratify=y
+        X, y, test_size=0.2, random_state=42, stratify=y
     )
 
-    # ==================== 3. 决策树建模与预剪枝 ====================
-    estimator = DecisionTreeClassifier(max_depth=5, random_state=66)
-    estimator.fit(X_train, y_train)
+    # 3. 决策树建模 (限制最大深度为 5 进行预剪枝)
+    tree_clf = DecisionTreeClassifier(max_depth=5, random_state=42)
+    tree_clf.fit(X_train, y_train)
 
-    # ==================== 4. 预测与评估 ====================
-    y_pred = estimator.predict(X_test)
-    print("=== 泰坦尼克号生还预测分类报告 ===")
-    print(classification_report(y_test, y_pred, target_names=["未生还 (0)", "生还 (1)"]))
-
-    # ==================== 5. 决策树结构可视化 ====================
-    plt.figure(figsize=(20, 12))
-    plot_tree(
-        estimator,
-        feature_names=x.columns,
-        class_names=["未生还", "生还"],
-        filled=True,
-        rounded=True,
-        fontsize=9
-    )
-    plt.title("泰坦尼克号生还预测决策树结构", fontsize=14)
-    plt.tight_layout()
-    plt.show()
+    y_pred = tree_clf.predict(X_test)
+    print("=== 泰坦尼克号生还预测 (决策树 max_depth=5) ===")
+    print(classification_report(y_test, y_pred, target_names=["遇难 (0)", "生还 (1)"]))
 
 if __name__ == "__main__":
-    titanic_survival_prediction()
+    main()

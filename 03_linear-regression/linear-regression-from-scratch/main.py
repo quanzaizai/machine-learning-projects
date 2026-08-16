@@ -1,82 +1,58 @@
 """
-【知识点】线性回归从零实现 (梯度下降优化法)
+💡【知识点】线性回归从零手撕实现 (梯度下降优化法与损失收敛)
 --------------------------------------------------------------------------------
-1. 预测模型：y_hat = w * x + b
-2. 均方误差损失：MSE = (1/N) * sum((y_hat - y)^2)
-3. 梯度下降：沿负梯度方向迭代更新参数 w = w - lr * dw，直到损失收敛。
+📌【核心思想与本质】
+  1. 预测模型：y_pred = w * x + b
+  2. 损失函数 (MSE)：L = (1 / 2N) * sum((y_pred - y)^2)
+  3. 梯度计算与参数更新：
+     - dw = (1/N) * sum((y_pred - y) * x)
+     - db = (1/N) * sum(y_pred - y)
+     - w = w - lr * dw, b = b - lr * db
 --------------------------------------------------------------------------------
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.linear_model import LinearRegression
 
-# ==================== 1. 数据合成与超参数初始化 ====================
+def generate_synthetic_data():
+    """生成带有高斯噪声的线性模拟数据"""
+    np.random.seed(42)
+    X = 2 * np.random.rand(100, 1)
+    y = 4 + 3 * X + np.random.randn(100, 1) * 0.5
+    return X, y
 
-np.random.seed(42)
-x = np.random.uniform(-5, 5, 100)
-noise = np.random.normal(0, 1, 100)
+def train_linear_regression(X, y, lr=0.1, epochs=100):
+    """手动执行批量梯度下降 (BGD)"""
+    N = len(y)
+    w = np.random.randn(1, 1)
+    b = np.zeros((1, 1))
+    loss_history = []
 
-w_true, b_true = 2.0, 3.0
-y = w_true * x + b_true + noise # 真实方程: y = 2x + 3 + noise
+    for epoch in range(epochs):
+        # 1. 前向预测
+        y_pred = X.dot(w) + b
+        # 2. 计算均方误差损失
+        loss = (1 / (2 * N)) * np.sum((y_pred - y) ** 2)
+        loss_history.append(loss)
 
-# 待学习参数初始化为 0
-w, b = 0.0, 0.0
-lr = 0.01          # 学习率 (Learning Rate)
-epochs = 500       # 迭代轮数
-loss_history = []  # 记录损失变化轨迹
+        # 3. 反向传播求梯度
+        dw = (1 / N) * X.T.dot(y_pred - y)
+        db = (1 / N) * np.sum(y_pred - y)
 
-# ==================== 2. 梯度下降核心训练循环 ====================
+        # 4. 沿负梯度方向更新权重
+        w -= lr * dw
+        b -= lr * db
 
-for epoch in range(epochs):
-    # 步骤 ①：前向传播 (Forward Pass)
-    y_pred = w * x + b
-    
-    # 步骤 ②：计算误差与均方误差损失 (MSE Loss)
-    error = y_pred - y
-    loss = np.mean(error ** 2)
-    loss_history.append(loss)
-    
-    # 步骤 ③：反向传播计算梯度 (Compute Gradients)
-    dw = np.mean(2 * error * x)
-    db = np.mean(2 * error * 1)
-    
-    # 步骤 ④：沿梯度反方向更新参数 (Update Parameters)
-    w = w - lr * dw
-    b = b - lr * db
+    return w, b, loss_history
 
-print("=== 从零手写梯度下降学习结果 ===")
-print(f"迭代轮数: {epochs} 轮 | 最终 Loss: {loss:.4f}")
-print(f"学得参数: w = {w:.4f} (真实值: {w_true}), b = {b:.4f} (真实值: {b_true})\n")
+def main():
+    X, y = generate_synthetic_data()
+    w, b, loss_history = train_linear_regression(X, y, lr=0.1, epochs=100)
 
-# ==================== 3. 结果可视化与图表存储 ====================
+    print("=== 从零手撕线性回归训练完成 ===")
+    print(f"  • 真实参数: w=3.0, b=4.0")
+    print(f"  • 拟合参数: w={w[0][0]:.3f}, b={b[0][0]:.3f}")
+    print(f"  • 最终损失 (MSE): {loss_history[-1]:.4f}")
 
-# 1. 绘制损失下降收敛曲线
-plt.figure(figsize=(7, 4))
-plt.plot(loss_history, color="blue", linewidth=1.5)
-plt.xlabel("Iteration", fontsize=11)
-plt.ylabel("MSE Loss", fontsize=11)
-plt.title("Gradient Descent Loss Convergence Curve", fontsize=12)
-plt.grid(True, linestyle="--", alpha=0.6)
-plt.savefig("loss_curve.png", bbox_inches="tight")
-plt.close()
-
-# 2. 绘制数据散点与回归拟合直线
-plt.figure(figsize=(7, 4))
-plt.scatter(x, y, color="steelblue", alpha=0.7, label="Sample Data")
-x_line = np.linspace(-5, 5, 100)
-plt.plot(x_line, w * x_line + b, color="crimson", linewidth=2, label=f"Fit Line (w={w:.2f}, b={b:.2f})")
-plt.xlabel("x", fontsize=11)
-plt.ylabel("y", fontsize=11)
-plt.title("Linear Regression Fit", fontsize=12)
-plt.legend()
-plt.grid(True, linestyle="--", alpha=0.6)
-plt.savefig("fit.png", bbox_inches="tight")
-plt.close()
-
-# ==================== 4. 对标 Scikit-Learn 官方结果 ====================
-
-sk_model = LinearRegression()
-sk_model.fit(x.reshape(-1, 1), y)
-print("=== Scikit-Learn 官方库对标结果 ===")
-print(f"Sklearn 计算得: w = {sk_model.coef_[0]:.4f}, b = {sk_model.intercept_:.4f}")
+if __name__ == "__main__":
+    main()
