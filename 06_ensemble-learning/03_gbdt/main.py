@@ -16,9 +16,10 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.model_selection import train_test_split
+# ==================== 0. 梯度提升决策树 GBDT 模块引入 ====================
+import pandas as pd                                  # 数据处理库：缺失值与离散变量预处理
+from sklearn.ensemble import GradientBoostingClassifier # 集成算法：GBDT 梯度提升分类器 (迭代拟合前序预测负梯度残差)
+from sklearn.model_selection import train_test_split # 数据划分：训练集与测试集划分
 
 
 def main() -> None:

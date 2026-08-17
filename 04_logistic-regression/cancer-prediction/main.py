@@ -16,11 +16,12 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+# ==================== 0. 数据处理、模型与医疗评估模块引入 ====================
+import pandas as pd                                  # 数据处理库：提供 CSV 数据流加载与病理特征提取
+from sklearn.linear_model import LogisticRegression   # 核心算法：逻辑回归 (Sigmoid 二分类模型)
+from sklearn.metrics import classification_report, confusion_matrix # 评估指标库：提供查准率、恶性召回率 (Recall) 与混淆矩阵
+from sklearn.model_selection import train_test_split # 数据切分：按分层比例划分训练集与测试集
+from sklearn.preprocessing import StandardScaler     # 特征工程：细胞病理参数标准化缩放
 
 
 def main() -> None:

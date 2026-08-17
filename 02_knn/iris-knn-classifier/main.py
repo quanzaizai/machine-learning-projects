@@ -24,10 +24,11 @@
 =============================================================================
 """
 
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
+# ==================== 0. 核心算法与数据预处理模块引入 ====================
+from sklearn.datasets import load_iris             # 样本数据集库：加载经典 150 例 4 维特征鸢尾花数据
+from sklearn.model_selection import train_test_split # 数据切分工具：按比例划分训练集与测试集 (支持分层抽样)
+from sklearn.neighbors import KNeighborsClassifier   # 核心算法库：KNN K-近邻多分类器实现
+from sklearn.preprocessing import StandardScaler     # 数据预处理库：StandardScaler 标准化 (消除特征尺度量纲差)
 
 
 def main() -> None:

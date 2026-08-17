@@ -15,11 +15,12 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+# ==================== 0. Boosting 自适应提升集成库引入 ====================
+import pandas as pd                                  # 数据处理库：红酒理化指标数据加载
+from sklearn.ensemble import AdaBoostClassifier      # 集成算法：AdaBoost 自适应提升分类器 (动态调整错分样本权重)
+from sklearn.metrics import accuracy_score           # 评估库：计算最终加权投票的分类准确率
+from sklearn.model_selection import train_test_split # 数据切分：划分训练与测试评估集
+from sklearn.tree import DecisionTreeClassifier      # 弱基学习器：单层/双层浅决策树桩 (Decision Stump)
 
 
 def main() -> None:

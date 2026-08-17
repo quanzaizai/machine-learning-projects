@@ -16,10 +16,11 @@
 =============================================================================
 """
 
-from sklearn.datasets import load_digits
-from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
+# ==================== 0. 核心算法与网格调参模块引入 ====================
+from sklearn.datasets import load_digits             # 数据集库：加载 8x8 手写数字图像 (1797 例 64 维特征)
+from sklearn.model_selection import GridSearchCV, train_test_split # 交叉验证网格搜索超参数寻优与数据集切分
+from sklearn.neighbors import KNeighborsClassifier   # 核心算法：KNN 分类器 (支持 uniform 与 distance 加权)
+from sklearn.preprocessing import StandardScaler     # 特征缩放：高维像素矩阵均值方差归一化
 
 
 def main() -> None:

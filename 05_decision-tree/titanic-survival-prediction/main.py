@@ -16,10 +16,11 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+# ==================== 0. 树模型算法与特征处理库引入 ====================
+import pandas as pd                                  # 数据清洗库：缺失值填充 (fillna) 与哑变量转换
+from sklearn.metrics import classification_report    # 模型评估：输出遇难/幸存两类的查准率与召回率
+from sklearn.model_selection import train_test_split # 数据集划分：分层抽样保持生死比例平衡
+from sklearn.tree import DecisionTreeClassifier      # 核心算法：CART 决策树分类器 (支持 Gini 不纯度与 max_depth 剪枝)
 
 
 def main() -> None:

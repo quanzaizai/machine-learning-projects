@@ -16,9 +16,10 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV, train_test_split
+# ==================== 0. Bagging 集成算法与网格搜索库引入 ====================
+import pandas as pd                                  # 表格处理库：泰坦尼克号乘客特征清洗
+from sklearn.ensemble import RandomForestClassifier  # 集成算法：随机森林分类器 (Bagging 重采样与特征子集随机化)
+from sklearn.model_selection import GridSearchCV, train_test_split # 交叉验证网格超参数调优与数据集划分
 
 
 def random_forest_classification() -> None:

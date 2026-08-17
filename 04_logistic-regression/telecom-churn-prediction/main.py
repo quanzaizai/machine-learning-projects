@@ -15,10 +15,11 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, roc_auc_score
-from sklearn.model_selection import train_test_split
+# ==================== 0. 数据处理、逻辑回归与 ROC 评估库引入 ====================
+import pandas as pd                                  # 数据分析库：提供 get_dummies 离散特征独热编码与表格清洗
+from sklearn.linear_model import LogisticRegression   # 核心模型：对数几率回归分类器 (max_iter 迭代控制)
+from sklearn.metrics import classification_report, roc_auc_score # 效能评估库：提供多维度分类报告与 ROC-AUC 判别得分计算
+from sklearn.model_selection import train_test_split # 数据划分：基于流失分布的分层抽样 (stratify)
 
 
 def main() -> None:

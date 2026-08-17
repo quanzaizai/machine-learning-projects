@@ -14,12 +14,13 @@
 =============================================================================
 """
 
-import pandas as pd
-from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
+# ==================== 0. 极端梯度提升 XGBoost 模块引入 ====================
+import pandas as pd                                  # 数据分析库：加载红酒分类理化特征数据集
+from sklearn.metrics import classification_report    # 评估指标库：输出多分类精确率、召回率与 F1 指标
+from sklearn.model_selection import train_test_split # 数据划分：训练与测试集切分
 
 try:
-    import xgboost as xgb
+    import xgboost as xgb                            # 工业王者算法：XGBoost (二阶泰勒展开与显式正则化树提升)
 except ImportError:
     xgb = None
 

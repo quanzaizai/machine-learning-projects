@@ -27,8 +27,9 @@
 =============================================================================
 """
 
-import numpy as np
-from typing import Tuple, List
+# ==================== 0. 科学计算与类型系统模块引入 ====================
+from typing import List, Tuple                       # 类型提示库：提供元组与列表强类型定义
+import numpy as np                                   # 科学计算库：提供高性能矩阵点积 (dot)、转置 (T) 与广播机制
 
 
 def generate_synthetic_data() -> Tuple[np.ndarray, np.ndarray]:
